@@ -23,5 +23,5 @@ RUN make -j$(grep -c processor /proc/cpuinfo) HDF5
 RUN make -j$(grep -c processor /proc/cpuinfo) VTK
 RUN make -j$(grep -c processor /proc/cpuinfo) ITK
 
-#try to build everything just to be sure
-RUN make -j$(grep -c processor /proc/cpuinfo) 
+#test - get the machine like this on dockerhubtry to build everything just to be sure
+#RUN make -j$(grep -c processor /proc/cpuinfo) 
