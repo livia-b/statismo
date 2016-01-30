@@ -45,6 +45,7 @@ if(NOT BUILD_VTK_RENDERING)
 	-DModule_vtkIOGeometry:BOOL=ON 
 	-DModule_vtkIOLegacy:BOOL=ON 
 	-DModule_vtkWrappingPythonCore:BOOL=OFF)
+endif()
 
 ExternalProject_Add(VTK
   DEPENDS ${VTK_DEPENDENCIES}
