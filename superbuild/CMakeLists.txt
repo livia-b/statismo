@@ -41,6 +41,15 @@ endif()
 set( Patches_DIR ${CMAKE_CURRENT_SOURCE_DIR}/patches )
 set( Statismo_DEPENDENCIES )
 
+option(MINIMAL_STATISMO_BUILD "Build only statismo core" OFF )
+if( ${MINIMAL_STATISMO_BUILD} MATCHES "OFF" )
+	set( BUILD_EXAMPLES ON)
+	set( BUILD_CLI_TOOLS ON)
+else()
+	set( BUILD_EXAMPLES OFF)
+	set( BUILD_CLI_TOOLS OFF)
+endif()
+
 option( USE_SYSTEM_Boost "Use system libraries for Boost" OFF )
 if( ${USE_SYSTEM_Boost} MATCHES "OFF" )
   include( External-Boost.cmake )
@@ -84,6 +93,8 @@ else()
   include( ${ITK_USE_FILE} )
 endif()
 
+
+
 ExternalProject_Add( Statismo
   DEPENDS ${Statismo_DEPENDENCIES}
   DOWNLOAD_COMMAND ""
@@ -105,5 +116,8 @@ ExternalProject_Add( Statismo
     -DVTK_DIR:PATH=${VTK_DIR}
     -DHDF5_DIR:PATH=${HDF5_DIR}
     -DEIGEN3_INCLUDE_DIR:PATH=${EIGEN3_INCLUDE_DIR}
+	-DCMAKE_INSTALL_PREFIX:PATH=${INSTALL_DEPENDENCIES_DIR}
+	-DCMAKE_BUILD_EXAMPLES:BOOL=${BUILD_EXAMPLES}
+	-DBUILD_CLI_TOOLS:BOOL=${BUILD_EXAMPLES}
   INSTALL_COMMAND ""
 )

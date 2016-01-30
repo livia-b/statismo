@@ -23,6 +23,29 @@ if( APPLE )
   set( _vtkOptions -DVTK_REQUIRED_OBJCXX_FLAGS:STRING="" )
 endif()
 
+option( BUILD_VTK_RENDERING "Build vtk rendering (disable if opengl not present" ON)
+#http://www.vtk.org/pipermail/vtkusers/2015-May/090922.html
+if(NOT BUILD_VTK_RENDERING)
+  set( _vtkNoRendering -DVTK_Group_StandAlone:BOOL=OFF 
+	-DVTK_Group_Rendering:BOOL=OFF 
+	-DModule_vtkCommonComputationalGeometry:BOOL=ON 
+	-DModule_vtkCommonDataModel:BOOL=ON 
+	-DModule_vtkCommonExecutionModel:BOOL=ON 
+	-DModule_vtkCommonMath:BOOL=ON 
+	-DModule_vtkCommonMisc:BOOL=ON 
+	-DModule_vtkCommonSystem:BOOL=ON 
+	-DModule_vtkCommonTransforms:BOOL=ON 
+	-DModule_vtkFiltersCore:BOOL=ON 
+	-DModule_vtkFiltersExtraction:BOOL=ON 
+	-DModule_vtkFiltersGeneral:BOOL=ON 
+	-DModule_vtkFiltersGeneric:BOOL=ON 
+	-DModule_vtkFiltersGeometry:BOOL=ON 
+	-DModule_vtkFiltersPython:BOOL=OFF
+	-DModule_vtkIOCore:BOOL=ON 
+	-DModule_vtkIOGeometry:BOOL=ON 
+	-DModule_vtkIOLegacy:BOOL=ON 
+	-DModule_vtkWrappingPythonCore:BOOL=OFF)
+
 ExternalProject_Add(VTK
   DEPENDS ${VTK_DEPENDENCIES}
   GIT_REPOSITORY ${git_protocol}://vtk.org/VTK.git
@@ -35,7 +58,8 @@ ExternalProject_Add(VTK
   CMAKE_ARGS
     ${ep_common_args}
     ${_vtkOptions}
-  	${cmake_hdf5_libs}
+    ${cmake_hdf5_libs}
+    ${_vtkNoRendering}
     -DBUILD_EXAMPLES:BOOL=OFF
     -DBUILD_SHARED_LIBS:BOOL=ON
     -DBUILD_TESTING:BOOL=OFF
